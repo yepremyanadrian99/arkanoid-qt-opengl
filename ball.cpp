@@ -1,19 +1,7 @@
 #include "ball.h"
 
-qreal Ball::getVx() const {
-    return this->vx;
-}
-
-void Ball::setVx(qreal vx) {
-    this->vx = vx;
-}
-
-qreal Ball::getVy() const {
-    return this->vy;
-}
-
-void Ball::setVy(qreal vy) {
-    this->vy = vy;
+int Ball::getId() const {
+    return this->id;
 }
 
 qreal Ball::getRadius() const {
@@ -33,8 +21,9 @@ void Ball::setPoint(QPointF point) {
 }
 
 void Ball::move() {
-    this->point.setX(this->point.x() + vx);
-    this->point.setY(this->point.y() + vy);
+    qreal delta_t = 1.35;
+    this->point.setX(this->point.x() + getVx() * delta_t);
+    this->point.setY(this->point.y() + getVy() * delta_t);
 }
 
 bool Ball::contains(const Ball& ball) {
@@ -45,3 +34,5 @@ bool Ball::contains(const Ball& ball) {
     qreal distance = std::sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     return distance < ball.radius + this->radius;
 }
+
+int Ball::nextId = 0;

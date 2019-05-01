@@ -27,7 +27,7 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
 
 private:
-    void checkCollisions();
+    void checkCollisionsAndMove();
     void showInfo(QPainter*);
     std::vector<Ball> balls;
     Board board;

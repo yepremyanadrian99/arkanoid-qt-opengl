@@ -25,17 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    brick.cpp \
         main.cpp \
         mainwindow.cpp \
     ball.cpp \
     helper.cpp \
-    board.cpp
+    board.cpp \
+    movableobject.cpp
 
 HEADERS += \
+    brick.h \
         mainwindow.h \
     ball.h \
     helper.h \
-    board.h
+    board.h \
+    movableobject.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,30 +1,29 @@
 #ifndef BALL_H
 #define BALL_H
 
+#include "movableobject.h"
 #include <QPointF>
 #include <cmath>
 
-class Ball
+class Ball : public MovableObject
 {
 public:
-    Ball() {}
+    Ball()
+        :id(nextId++) {}
 
     Ball(qreal x, qreal y)
-        :point(x, y) {}
+        :id(nextId++), point(x, y) {}
 
     Ball(QPointF point)
-        :point(point) {}
+        :id(nextId++), point(point) {}
 
     Ball(qreal x, qreal y, qreal radius)
-        :point(x, y), radius(radius) {}
+        :id(nextId++), point(x, y), radius(radius) {}
 
-    Ball (QPointF point, qreal radius)
-        :point(point), radius(radius) {}
+    Ball(QPointF point, qreal radius)
+        :id(nextId++), point(point), radius(radius) {}
 
-    qreal getVx() const;
-    void setVx(qreal);
-    qreal getVy() const;
-    void setVy(qreal);
+    int getId() const;
     qreal getRadius() const;
     void setRadius(qreal);
     const QPointF getPoint() const;
@@ -34,8 +33,9 @@ public:
     bool contains(const Ball&);
 
 private:
+    static int nextId;
+    const int id;
     QPointF point;
-    qreal vx, vy;
     qreal radius;
 };
 

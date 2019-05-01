@@ -28,22 +28,6 @@ void Board::setY(qreal y) {
     this->rect.setRect(getX(), y, getWidth(), getHeight());
 }
 
-qreal Board::getVx() const {
-    return this->vx;
-}
-
-void Board::setVx(qreal vx) {
-    this->vx = vx;
-}
-
-qreal Board::getVy() const {
-    return this->vy;
-}
-
-void Board::setVy(qreal vy) {
-    this->vy = vy;
-}
-
 qreal Board::getWidth() const {
     return this->rect.width();
 }
@@ -61,5 +45,5 @@ void Board::setHeight(qreal height) {
 }
 
 void Board::move() {
-    this->rect.setRect(getX() + vx, getY() + vy, getWidth(), getHeight());
+    this->rect.setRect(getX() + getVx(), getY() + getVy(), getWidth(), getHeight());
 }

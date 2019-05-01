@@ -1,15 +1,16 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include "movableobject.h"
 #include <QPointF>
 #include <QRectF>
 
-class Board
+class Board : public MovableObject
 {
 public:
     Board() {}
     Board(QRectF rect)
-        :rect(rect){}
+        :rect(rect) {}
     Board(qreal x, qreal y, qreal width, qreal height);
 
     const QRectF getRect() const;
@@ -18,10 +19,6 @@ public:
     void setX(qreal);
     qreal getY() const;
     void setY(qreal);
-    qreal getVx() const;
-    void setVx(qreal);
-    qreal getVy() const;
-    void setVy(qreal);
     qreal getWidth() const;
     void setWidth(qreal);
     qreal getHeight() const;
@@ -31,8 +28,6 @@ public:
 
 private:
     QRectF rect;
-    qreal vx;
-    qreal vy;
 };
 
 #endif // BLOCK_H
