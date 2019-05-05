@@ -1,33 +1,17 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "movableobject.h"
-#include <QPointF>
-#include <QRectF>
+#include "movablerectangle.h"
+#include "colorfulobject.h"
 
-class Board : public MovableObject
-{
+class Board : public MovableRectangle, public ColorfulObject {
+
 public:
-    Board() {}
-    Board(QRectF rect)
-        :rect(rect) {}
-    Board(qreal x, qreal y, qreal width, qreal height);
+    Board();
+    Board(QRectF, QColor = Qt::darkGray);
+    Board(qreal, qreal, qreal, qreal, QColor = Qt::darkGray);
+    ~Board();
 
-    const QRectF getRect() const;
-    void setRect(QRectF);
-    qreal getX() const;
-    void setX(qreal);
-    qreal getY() const;
-    void setY(qreal);
-    qreal getWidth() const;
-    void setWidth(qreal);
-    qreal getHeight() const;
-    void setHeight(qreal);
-
-    void move();
-
-private:
-    QRectF rect;
 };
 
 #endif // BLOCK_H

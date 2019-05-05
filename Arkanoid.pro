@@ -26,20 +26,30 @@ CONFIG += c++11
 
 SOURCES += \
     brick.cpp \
-        main.cpp \
-        mainwindow.cpp \
+    gameobject.cpp \
+    main.cpp \
+    mainwindow.cpp \
     ball.cpp \
     helper.cpp \
     board.cpp \
-    movableobject.cpp
+    movablecircle.cpp \
+    movableobject.cpp \
+    movablerectangle.cpp \
+    colorfulobject.cpp \
+    destroyableobject.cpp
 
 HEADERS += \
     brick.h \
-        mainwindow.h \
+    gameobject.h \
+    mainwindow.h \
     ball.h \
     helper.h \
     board.h \
-    movableobject.h
+    movablecircle.h \
+    movableobject.h \
+    movablerectangle.h \
+    colorfulobject.h \
+    destroyableobject.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

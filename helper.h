@@ -1,21 +1,23 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-#include "ball.h"
-#include "board.h"
 #include <cmath>
 #include <vector>
+#include "movablecircle.h"
+#include "movablerectangle.h"
+#include "brick.h"
 
-class Helper
-{
+class Helper {
+
 public:
     Helper();
 
-    bool contains(const Board&, const Ball&) const;
-    bool contains(const Ball&, const Ball&) const;
-    void handleCollision(Board&, Ball&) const;
-    void handleCollision(Ball&, std::vector<Ball>&) const;
-    qreal massOfCircle(const qreal) const;
+    bool contains(const MovableCircle&, const MovableRectangle&) const;
+    bool contains(const MovableCircle&, const MovableCircle&) const;
+    void handleCollision(MovableCircle&, MovableRectangle&) const;
+    void handleCollision(MovableCircle&, std::vector<MovableRectangle*>) const;
+    void handleCollision(MovableCircle&, std::vector<MovableCircle*>) const;
+
 };
 
 #endif // HELPER_H

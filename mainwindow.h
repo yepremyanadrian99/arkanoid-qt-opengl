@@ -8,11 +8,12 @@
 #include "ball.h"
 #include "board.h"
 #include "helper.h"
+#include "brick.h"
 #include <QThread>
 #include <iostream>
 
-class MainWindow : public QGLWidget
-{
+class MainWindow : public QGLWidget {
+
     Q_OBJECT
 
 public slots:
@@ -27,11 +28,15 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
 
 private:
-    void checkCollisionsAndMove();
+    void checkCollisions();
+    void checkBallCollisionsAndMove();
+    void checkBoardCollisionsAndMove();
     void showInfo(QPainter*);
-    std::vector<Ball> balls;
-    Board board;
+    std::vector<MovableCircle*> balls;
+    std::vector<MovableRectangle*> bricks;
+    MovableRectangle* board;
     Helper helper;
+
 };
 
 #endif // MAINWINDOW_H

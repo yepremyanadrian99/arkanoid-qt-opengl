@@ -1,7 +1,9 @@
 #include "movableobject.h"
 
-MovableObject::MovableObject()
-{
+MovableObject::MovableObject() {
+}
+
+MovableObject::~MovableObject() {
 }
 
 qreal MovableObject::getVx() const {

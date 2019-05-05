@@ -1,22 +1,18 @@
 #ifndef BRICK_H
 #define BRICK_H
 
-#include "movableobject.h"
-#include <QRectF>
-#include <QColor>
+#include "movablerectangle.h"
+#include "colorfulobject.h"
+#include "destroyableobject.h"
 
-class Brick : public MovableObject
-{    
+class Brick : public MovableRectangle,  public ColorfulObject, public DestroyableObject {
+
 public:
     Brick();
+    Brick(QRectF, QColor = Qt::blue, qreal = 1);
+    Brick(qreal x, qreal y, qreal width, qreal height, QColor = Qt::blue, qreal = 1);
+    ~Brick();
 
-    QRectF getRect() const;
-    void setRect(QRectF) const;
-
-private:
-    QRectF rect;
-    QColor color;
-    qreal life;
 };
 
 #endif // BRICK_H
