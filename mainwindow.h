@@ -32,6 +32,7 @@ private:
     void checkBallCollisionsAndMove();
     void checkBoardCollisionsAndMove();
     void showInfo(QPainter*);
+    void generateBall();
     std::vector<MovableCircle*> balls;
     std::vector<MovableRectangle*> bricks;
     MovableRectangle* board;

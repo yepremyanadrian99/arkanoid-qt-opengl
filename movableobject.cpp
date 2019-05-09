@@ -1,6 +1,7 @@
 #include "movableobject.h"
 
-MovableObject::MovableObject() {
+MovableObject::MovableObject()
+    :vx(0), vy(0) {
 }
 
 MovableObject::~MovableObject() {

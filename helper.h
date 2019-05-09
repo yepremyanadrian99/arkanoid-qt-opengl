@@ -17,7 +17,8 @@ public:
     void handleCollision(MovableCircle&, MovableRectangle&) const;
     void handleCollision(MovableCircle&, std::vector<MovableRectangle*>) const;
     void handleCollision(MovableCircle&, std::vector<MovableCircle*>) const;
-
+    bool contains(const MovableCircle&, const MovableRectangle&, int) const;
+    void changeDirection(MovableCircle&, const MovableRectangle&) const;
 };
 
 #endif // HELPER_H
