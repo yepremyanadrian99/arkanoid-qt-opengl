@@ -1,14 +1,17 @@
 #include "movablecircle.h"
 
-MovableCircle::MovableCircle() {
+MovableCircle::MovableCircle(qreal vx, qreal vy)
+    :MovableObject (vx, vy) {
 }
 
-MovableCircle::MovableCircle(QPointF point, qreal radius)
-    :point(point), radius(radius) {
+MovableCircle::MovableCircle(QPointF point, qreal radius, qreal vx, qreal vy)
+    :MovableCircle(vx, vy) {
+    this->point = point;
+    this->radius = radius;
 }
 
-MovableCircle::MovableCircle(qreal x, qreal y, qreal radius)
-    :MovableCircle(QPointF(x, y), radius) {
+MovableCircle::MovableCircle(qreal x, qreal y, qreal radius, qreal vx, qreal vy)
+    :MovableCircle(QPointF(x, y), radius, vx, vy) {
 }
 
 MovableCircle::~MovableCircle() {
@@ -34,12 +37,23 @@ void MovableCircle::setPoint(QPointF point) {
     this->point = point;
 }
 
-qreal MovableCircle::getMass() const {
-    return M_PI * radius * radius;
+qreal MovableCircle::getX() const {
+    return this->getPoint().x();
+}
+
+void MovableCircle::setX(qreal x) {
+    this->point = QPointF(x, point.y());
+}
+
+qreal MovableCircle::getY() const {
+    return this->getPoint().y();
+}
+
+void MovableCircle::setY(qreal y) {
+    this->point = QPointF(point.x(), y);
 }
 
 void MovableCircle::move() {
-    qreal delta_t = 1.35;
-    this->getPoint().setX(this->getPoint().x() + getVx() * delta_t);
-    this->getPoint().setY(this->getPoint().y() + getVy() * delta_t);
+    this->getPoint().setX(this->getPoint().x() + getVx());
+    this->getPoint().setY(this->getPoint().y() + getVy());
 }

@@ -1,24 +1,40 @@
 #include "movableobject.h"
 
-MovableObject::MovableObject()
-    :vx(0), vy(0) {
+MovableObject::MovableObject(qreal vx, qreal vy)
+    :velocity(vx, vy) {
+}
+
+MovableObject::MovableObject(Vector2D velocity)
+    :velocity(velocity) {
 }
 
 MovableObject::~MovableObject() {
 }
 
+const Vector2D& MovableObject::getVelocity() const {
+    return this->velocity;
+}
+
+Vector2D& MovableObject::getVelocity() {
+    return this->velocity;
+}
+
+void MovableObject::setVelocity(Vector2D velocity) {
+    this->velocity = velocity;
+}
+
 qreal MovableObject::getVx() const {
-    return this->vx;
+    return this->velocity.getX();
 }
 
 void MovableObject::setVx(qreal vx) {
-    this->vx = vx;
+    this->velocity.setX(vx);
 }
 
 qreal MovableObject::getVy() const {
-    return this->vy;
+    return this->velocity.getY();
 }
 
 void MovableObject::setVy(qreal vy) {
-    this->vy = vy;
+    this->velocity.setY(vy);
 }

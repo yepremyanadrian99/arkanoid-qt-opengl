@@ -1,24 +1,31 @@
 #ifndef HELPER_H
 #define HELPER_H
 
+#include <QTimer>
 #include <cmath>
 #include <vector>
+#include <map>
 #include "movablecircle.h"
 #include "movablerectangle.h"
 #include "brick.h"
 
 class Helper {
+private:
+    mutable std::map<int, int> collapseMap;
+
+    enum COLLISION_TYPE {
+        UP_DOWN_COLLISION,
+        LEFT_RIGHT_COLLISION,
+        CORNER_COLLISION,
+        NONE
+    };
 
 public:
-    Helper();
-
-    bool contains(const MovableCircle&, const MovableRectangle&) const;
-    bool contains(const MovableCircle&, const MovableCircle&) const;
-    void handleCollision(MovableCircle&, MovableRectangle&) const;
-    void handleCollision(MovableCircle&, std::vector<MovableRectangle*>) const;
-    void handleCollision(MovableCircle&, std::vector<MovableCircle*>) const;
-    bool contains(const MovableCircle&, const MovableRectangle&, int) const;
-    void changeDirection(MovableCircle&, const MovableRectangle&) const;
+    bool contains(const MovableCircle &circle, const MovableRectangle &rect) const;
+    void handleCollision(MovableCircle &circle, MovableRectangle &rect) const;
+    void handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects) const;
+    void handleBallOutsideMap(MovableCircle &circle, int width, int height) const;
+    COLLISION_TYPE getCollisionType(const MovableCircle &circle, const MovableRectangle &rect) const;
 };
 
 #endif // HELPER_H

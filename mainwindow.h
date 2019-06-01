@@ -36,8 +36,10 @@ private:
     std::vector<MovableCircle*> balls;
     std::vector<MovableRectangle*> bricks;
     MovableRectangle* board;
+    QPixmap image;
     Helper helper;
-
+    QTimer *timer;
+    int time = 50;
 };
 
 #endif // MAINWINDOW_H

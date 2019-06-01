@@ -1,10 +1,14 @@
 #include "gameobject.h"
 
 GameObject::GameObject()
-    :id(nextId++) {
+    :id(getNextId()) {
 }
 
 GameObject::~GameObject() {
+}
+
+int GameObject::getNextId() {
+    return nextId++;
 }
 
 int GameObject::getId() const {

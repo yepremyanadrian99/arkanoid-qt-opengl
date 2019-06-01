@@ -7,29 +7,27 @@
 class MovableRectangle : public MovableObject {
 
 public:
-    MovableRectangle();
-    MovableRectangle(QRectF);
-    MovableRectangle(qreal x, qreal y, qreal width, qreal height);
-    virtual ~MovableRectangle();
+    MovableRectangle(qreal vx = 0, qreal vy = 0);
+    MovableRectangle(QRectF point, qreal vx = 0, qreal vy = 0);
+    MovableRectangle(qreal x, qreal y, qreal width, qreal height, qreal vx = 0, qreal vy = 0);
+    virtual ~MovableRectangle() = 0;
 
     const QRectF& getRect() const;
     QRectF& getRect();
-    void setRect(QRectF);
+    void setRect(QRectF rect);
     qreal getX() const;
-    void setX(qreal);
+    void setX(qreal x);
     qreal getY() const;
-    void setY(qreal);
+    void setY(qreal y);
     qreal getWidth() const;
-    void setWidth(qreal);
+    void setWidth(qreal width);
     qreal getHeight() const;
-    void setHeight(qreal);
+    void setHeight(qreal height);
 
-    qreal getMass() const;
     void move();
 
 private:
     QRectF rect;
-
 };
 
 #endif // MOVABLERECTANGLE_H

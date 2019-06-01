@@ -2,25 +2,27 @@
 #define MOVABLEOBJECT_H
 
 #include "gameobject.h"
+#include "vector2d.h"
 
 class MovableObject : public GameObject {
 
 public:
-    MovableObject();
-    virtual ~MovableObject();
+    MovableObject(qreal vx = 0, qreal vy = 0);
+    MovableObject(Vector2D velocity);
+    virtual ~MovableObject() = 0;
 
+    const Vector2D& getVelocity() const;
+    Vector2D& getVelocity();
+    void setVelocity(Vector2D velocity);
     qreal getVx() const;
-    void setVx(qreal);
+    void setVx(qreal vx);
     qreal getVy() const;
-    void setVy(qreal);
+    void setVy(qreal vy);
 
-    virtual qreal getMass() const = 0;
     virtual void move() = 0;
 
 private:
-    qreal vx;
-    qreal vy;
-
+    Vector2D velocity;
 };
 
 #endif // MOVABLEOBJECT_H

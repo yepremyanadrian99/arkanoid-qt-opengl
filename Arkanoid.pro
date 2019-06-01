@@ -36,7 +36,8 @@ SOURCES += \
     movableobject.cpp \
     movablerectangle.cpp \
     colorfulobject.cpp \
-    destroyableobject.cpp
+    destroyableobject.cpp \
+    vector2d.cpp
 
 HEADERS += \
     brick.h \
@@ -49,7 +50,8 @@ HEADERS += \
     movableobject.h \
     movablerectangle.h \
     colorfulobject.h \
-    destroyableobject.h
+    destroyableobject.h \
+    vector2d.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

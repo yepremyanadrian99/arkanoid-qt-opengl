@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include <QCoreApplication>
+#include <iostream>
 
 MainWindow::MainWindow(QGLWidget *parent)
     : QGLWidget(parent) {
@@ -7,70 +9,33 @@ MainWindow::MainWindow(QGLWidget *parent)
     this->updateGL();
 
     helper = Helper();
-
-    board = new Board(this->width() - 200, this->height() - 25, 100, 25);
-    board->setVx(0);
-    board->setVy(0);
-
+    board = new Board(this->width() - 90, this->height() - 25, 80, 25);
     balls = std::vector<MovableCircle*>();
 
-//    qreal ballWidth = 10;
-
-//    Ball *ball1 = new Ball(100, 300, ballWidth);
-//    ball1->setVx(-5.5);
-//    ball1->setVy(0.5);
-
-//    Ball *ball2 = new Ball(400, 200, ballWidth);
-//    ball2->setVx(-6.25);
-//    ball2->setVy(-0.75);
-
-//    Ball *ball3 = new Ball(300, 250, ballWidth);
-//    ball3->setVx(1);
-//    ball3->setVy(-5.80);
-
-//    Ball *ball4 = new Ball(200, 200, ballWidth);
-//    ball4->setVx(2);
-//    ball4->setVy(-4.5);
-
-//    Ball *ball5 = new Ball(400, 250, ballWidth);
-//    ball5->setVx(-1.25);
-//    ball5->setVy(-0.75);
-
-//    Ball *ball6 = new Ball(300, 350, ballWidth);
-//    ball6->setVx(1);
-//    ball6->setVy(-0.80);
-
-//    Ball *ball7 = new Ball(200, 300, ballWidth);
-//    ball7->setVx(0.5);
-//    ball7->setVy(-0.5);
-
-//    Ball *ball8 = new Ball(400, 100, ballWidth);
-//    ball8->setVx(-0.25);
-//    ball8->setVy(-0.75);
-
-//    Ball *ball9 = new Ball(300, 150, ballWidth);
-//    ball9->setVx(0.20);
-//    ball9->setVy(-0.80);
-
-//    balls.push_back(ball1);
-//    balls.push_back(ball2);
-//    balls.push_back(ball3);
-//    balls.push_back(ball4);
-//    balls.push_back(ball5);
-//    balls.push_back(ball6);
-//    balls.push_back(ball7);
-//    balls.push_back(ball8);
-//    balls.push_back(ball9);
-
-    generateBall();
-
-    for(int i = 1; i * 5 < this->width(); ++i) {
-        bricks.push_back(new Brick(i * 100 + 50, 50, 50, 25));
+    for(int i = 0; i < 10; ++i) {
+        generateBall();
     }
 
-    QTimer *timer = new QTimer(this);
+//    balls[0]->setX(40);
+//    balls[1]->setX(70);
+//    balls[2]->setX(100);
+    balls[3]->setX(130);
+//    balls[4]->setX(160);
+//    balls[5]->setX(190);
+//    balls[6]->setX(220);
+//    balls[7]->setX(250);
+//    balls[8]->setX(280);
+//    balls[9]->setX(310);
+
+    board->setVx(-2);
+
+    for(int i = 1; 50 + 75 * i < this->width(); ++i) {
+        bricks.push_back(new Brick(50 + 75 * i, 50, 50, 25));
+    }
+
+    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-    timer->start(1);
+    timer->start(time);
 }
 
 MainWindow::~MainWindow() {}
@@ -87,11 +52,14 @@ void MainWindow::paint(QPainter *painter, QPaintEvent) {
     for(MovableCircle *b : balls) {
         painter->setBrush(dynamic_cast<ColorfulObject*>(b)->getColor());
         painter->drawEllipse(b->getPoint(), b->getRadius(), b->getRadius());
+//        painter->drawImage(QRectF(b->getX() - b->getRadius(), b->getY() - b->getRadius(), b->getRadius() * 2, b->getRadius() * 2),
+//                           QImage(QString("%1/ball_red.png").arg(QCoreApplication::applicationDirPath())));
     }
 
     for(MovableRectangle *b : bricks) {
         painter->setBrush(dynamic_cast<ColorfulObject*>(b)->getColor());
         painter->drawRect(b->getRect());
+//        painter->drawImage(b->getRect(), QImage(QString("%1/board_medium.png").arg(QCoreApplication::applicationDirPath())));
     }
 
     painter->setBrush(dynamic_cast<ColorfulObject*>(board)->getColor());
@@ -110,11 +78,19 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if(event->key() == Qt::Key_A &&
-            board->getX() > 0) {
-        board->setVx(-4);
+            board->getX() > 1) {
+        board->setVx(-2);
     } else if(event->key() == Qt::Key_D &&
-              board->getX() < this->width() - board->getWidth()) {
-        board->setVx(4);
+              board->getX() < this->width() - board->getWidth() - 1) {
+        board->setVx(2);
+    } else if(event->key() == Qt::Key_F) {
+        if(time == 150) {
+            time = 1;
+        } else {
+            time = 150;
+        }
+        timer->stop();
+        timer->start(time);
     }
 }
 
@@ -128,13 +104,16 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)  {
 void MainWindow::showInfo(QPainter* painter) {
     painter->drawText(QPointF(0, 10), "Board vx: " + QString::number(board->getVx()));
     painter->drawText(QPointF(0, 20), "Board vy: " + QString::number(board->getVy()));
-    painter->drawText(QPointF(0, 30), "Board width: " + QString::number(board->getWidth()));
-    painter->drawText(QPointF(0, 40), "Board height: " + QString::number(board->getHeight()));
+    painter->drawText(QPointF(0, 30), "Board x: " + QString::number(board->getX()));
+    painter->drawText(QPointF(0, 40), "Board y: " + QString::number(board->getY()));
+    painter->drawText(QPointF(0, 50), "Board width: " + QString::number(board->getWidth()));
+    painter->drawText(QPointF(0, 60), "Board height: " + QString::number(board->getHeight()));
 
+    painter->setPen(Qt::black);
     for(size_t i = 0; i < balls.size(); ++i) {
-        painter->drawText(QPointF(0, 50+10*i), "Ball#" + QString::number(i) + " vx: " + QString::number(balls[i]->getVx()));
-        painter->drawText(QPointF(0, 100+10*i), "Ball#" + QString::number(i) + " vy: " + QString::number(balls[i]->getVy()));
-        painter->drawText(QPointF(0, 150+10*i), "Ball#" + QString::number(i) + " vx2 + vy2: " + QString::number(balls[i]->getVx()*balls[i]->getVx()+balls[i]->getVy()*balls[i]->getVy()));
+        painter->drawText(QPointF(0, 80+10*i*3), "Ball#" + QString::number(i) + " vx: " + QString::number(balls[i]->getVx()));
+        painter->drawText(QPointF(0, 90+10*i*3), "Ball#" + QString::number(i) + " vy: " + QString::number(balls[i]->getVy()));
+        painter->drawText(QPointF(0, 100+10*i*3), "Ball#" + QString::number(i) + " vx2 + vy2: " + QString::number(balls[i]->getVx()*balls[i]->getVx()+balls[i]->getVy()*balls[i]->getVy()));
     }
 }
 
@@ -147,16 +126,13 @@ void MainWindow::checkBoardCollisionsAndMove() {
     board->move();
     if(board->getX() < 1) {
         board->setX(1);
-        board->setVx(0);
-    } else if(board->getX() + board->getWidth() > this->width() - 1) {
-        board->setX(this->width() - board->getWidth() - 1);
-        board->setVx(0);
+    } else if(board->getX() + board->getWidth() >= this->width()) {
+        board->setX(this->width() - board->getWidth());
     }
 }
 
 void MainWindow::checkBallCollisionsAndMove() {
     for(MovableCircle* b : balls) {
-        helper.handleCollision(*b, balls);
         helper.handleCollision(*b, *board);
         helper.handleCollision(*b, bricks);
 
@@ -174,9 +150,10 @@ void MainWindow::checkBallCollisionsAndMove() {
 }
 
 void MainWindow::generateBall() {
-    std::srand(time(NULL));
-    qreal vx = (5 + std::rand() % 31) / 10.0;
-    qreal vy = std::sqrt(16 - vx * vx);
+    std::srand(std::time(NULL));
+    qreal vx = 1.9;
+//    qreal vx = (5 + std::rand() % 11) / 10.0;
+    qreal vy = std::sqrt(4 - vx * vx);
 
     Ball *b = new Ball(board->getX() + board->getWidth() / 2, board->getY() - 50, 10);
     b->setVx(vx);

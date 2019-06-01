@@ -7,15 +7,14 @@ class DestroyableObject {
 
 public:
     DestroyableObject();
-    DestroyableObject(qreal);
+    DestroyableObject(qreal life);
     ~DestroyableObject();
 
     qreal getLife() const;
-    void setLife(qreal);
+    void setLife(qreal life);
 
 private:
     qreal life;
-
 };
 
 #endif // DESTROYABLEOBJET_H

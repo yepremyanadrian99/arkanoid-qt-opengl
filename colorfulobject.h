@@ -7,15 +7,14 @@ class ColorfulObject {
 
 public:
     ColorfulObject();
-    ColorfulObject(QColor);
+    ColorfulObject(QColor color);
     ~ColorfulObject();
 
     const QColor getColor() const;
-    void setColor(QColor);
+    void setColor(QColor color);
 
 private:
     QColor color;
-
 };
 
 #endif // COLORFULOBJECT_H

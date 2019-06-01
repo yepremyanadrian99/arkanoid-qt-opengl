@@ -9,10 +9,9 @@ class Brick : public MovableRectangle,  public ColorfulObject, public Destroyabl
 
 public:
     Brick();
-    Brick(QRectF, QColor = Qt::blue, qreal = 1);
-    Brick(qreal x, qreal y, qreal width, qreal height, QColor = Qt::blue, qreal = 1);
+    Brick(QRectF rect, QColor color = Qt::blue, qreal life = 1);
+    Brick(qreal x, qreal y, qreal width, qreal height, QColor color = Qt::blue, qreal life = 1);
     ~Brick();
-
 };
 
 #endif // BRICK_H

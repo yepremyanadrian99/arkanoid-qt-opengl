@@ -1,14 +1,16 @@
 #include "movablerectangle.h"
 
-MovableRectangle::MovableRectangle() {
+MovableRectangle::MovableRectangle(qreal vx, qreal vy)
+    :MovableObject(vx, vy) {
 }
 
-MovableRectangle::MovableRectangle(QRectF rect)
-    :rect(rect) {
+MovableRectangle::MovableRectangle(QRectF rect, qreal vx, qreal vy)
+    :MovableRectangle(vx, vy) {
+    this->rect = rect;
 }
 
-MovableRectangle::MovableRectangle(qreal x, qreal y, qreal width, qreal height)
-    :MovableRectangle(QRectF(x, y, width, height)) {
+MovableRectangle::MovableRectangle(qreal x, qreal y, qreal width, qreal height, qreal vx, qreal vy)
+    :MovableRectangle(QRectF(x, y, width, height), vx, vy) {
 }
 
 MovableRectangle::~MovableRectangle() {
@@ -31,7 +33,7 @@ qreal MovableRectangle::getX() const {
 }
 
 void MovableRectangle::setX(qreal x) {
-    this->rect.setX(x);
+    this->rect.setRect(x, rect.y(), getWidth(), getHeight());
 }
 
 qreal MovableRectangle::getY() const {
@@ -39,7 +41,7 @@ qreal MovableRectangle::getY() const {
 }
 
 void MovableRectangle::setY(qreal y) {
-    this->rect.setY(y);
+    this->rect.setRect(rect.x(), y, getWidth(), getHeight());
 }
 
 qreal MovableRectangle::getWidth() const {
@@ -56,10 +58,6 @@ qreal MovableRectangle::getHeight() const {
 
 void MovableRectangle::setHeight(qreal height) {
     this->rect.setHeight(height);
-}
-
-qreal MovableRectangle::getMass() const {
-    return getRect().width() * getRect().height();
 }
 
 void MovableRectangle::move() {
