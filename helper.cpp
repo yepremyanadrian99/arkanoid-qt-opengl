@@ -1,7 +1,9 @@
 #include "helper.h"
 #include <iostream>
 
-void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) const {
+std::map<int, int> collapseMap;
+
+void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
     if(rect.getId() == 0) {
         auto idToRemove = collapseMap.find(circle.getId());
         if(idToRemove != collapseMap.end()) {
@@ -23,6 +25,7 @@ void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) cons
     } else if(collType == COLLISION_TYPE::LEFT_RIGHT_COLLISION) {
         collided = true;
         circle.getVelocity().reverseX();
+//        always move the ball up when hit by sides to not lose
         circle.setVy(-abs(circle.getVy()));
         if(rect.getId() == 0) {
             collapseMap[circle.getId()] = 100;
@@ -56,19 +59,19 @@ void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) cons
     }
 }
 
-void Helper::handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects) const {
+void Helper::handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects) {
     for(size_t i = 0; i < rects.size(); ++i) {
         handleCollision(circle, *rects[i]);
     }
 }
 
-bool Helper::contains(const MovableCircle &circle, const MovableRectangle &rect) const {
+bool Helper::contains(const MovableCircle &circle, const MovableRectangle &rect) {
     qreal deltaX = circle.getPoint().x() - std::max(rect.getX(), std::min(circle.getPoint().x(), rect.getX() + rect.getWidth()));
     qreal deltaY = circle.getPoint().y() - std::max(rect.getY(), std::min(circle.getPoint().y(), rect.getY()+ rect.getHeight()));
     return (deltaX * deltaX + deltaY * deltaY) < (circle.getRadius() * circle.getRadius());
 }
 
-Helper::COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const MovableRectangle &rect) const {
+COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const MovableRectangle &rect) {
     qreal eps = circle.getVelocity().length();
 
     qreal cx = circle.getX();
@@ -96,7 +99,7 @@ Helper::COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, con
     return COLLISION_TYPE::NONE;
 }
 
-void Helper::handleBallOutsideMap(MovableCircle &circle, int width, int height) const {
+void Helper::handleBallOutsideMap(MovableCircle &circle, int width, int height) {
     if(circle.getX() + circle.getRadius() / 2 > width) {
         circle.setX(width - circle.getRadius() / 2);
     }

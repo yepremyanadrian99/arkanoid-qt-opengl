@@ -6,11 +6,15 @@
 
 class Board : public MovableRectangle, public ColorfulObject {
 
-public:
+private:
     Board();
-    Board(QRectF point, qreal vx = 0, qreal vy = 0, QColor color = Qt::darkGray);
-    Board(qreal x, qreal y, qreal width, qreal height, qreal vx = 0, qreal vy = 0, QColor color = Qt::darkGray);
+
+private:
+    static Board *instance;
+
+public:
     ~Board();
+    static Board* getInstance();
 };
 
 #endif // BLOCK_H

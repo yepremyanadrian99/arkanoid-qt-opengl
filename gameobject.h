@@ -12,11 +12,9 @@ public:
     int getId() const;
 
 private:
-    static int getNextId();
-
-    static int nextId;
     int id;
-
+    static int nextId;
+    static int getNextId();
 };
 
 #endif // GAMEOBJECT_H

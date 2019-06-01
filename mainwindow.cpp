@@ -8,8 +8,10 @@ MainWindow::MainWindow(QGLWidget *parent)
     this->setGeometry(100, 100, 800, 600);
     this->updateGL();
 
-    helper = Helper();
-    board = new Board(this->width() - 90, this->height() - 25, 80, 25);
+    board = Board::getInstance();
+    board->setRect(QRectF(this->width() - 90, this->height() - 25, 80, 25));
+    board->setColor(Qt::black);
+
     balls = std::vector<MovableCircle*>();
 
     for(int i = 0; i < 10; ++i) {
@@ -133,8 +135,8 @@ void MainWindow::checkBoardCollisionsAndMove() {
 
 void MainWindow::checkBallCollisionsAndMove() {
     for(MovableCircle* b : balls) {
-        helper.handleCollision(*b, *board);
-        helper.handleCollision(*b, bricks);
+        Helper::handleCollision(*b, *board);
+        Helper::handleCollision(*b, bricks);
 
         if(b->getPoint().x() + b->getRadius() >= this->width() ||
                 b->getPoint().x() - b->getRadius() <= 0) {
@@ -151,8 +153,7 @@ void MainWindow::checkBallCollisionsAndMove() {
 
 void MainWindow::generateBall() {
     std::srand(std::time(NULL));
-    qreal vx = 1.9;
-//    qreal vx = (5 + std::rand() % 11) / 10.0;
+    qreal vx = (5 + std::rand() % 11) / 10.0;
     qreal vy = std::sqrt(4 - vx * vx);
 
     Ball *b = new Ball(board->getX() + board->getWidth() / 2, board->getY() - 50, 10);
