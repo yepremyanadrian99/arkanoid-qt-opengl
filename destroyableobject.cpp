@@ -17,3 +17,11 @@ qreal DestroyableObject::getLife() const {
 void DestroyableObject::setLife(qreal life) {
     this->life = life;
 }
+
+void DestroyableObject::hit() {
+    --this->life;
+}
+
+bool DestroyableObject::isDestroyed() const {
+    return this->life <= 0;
+}

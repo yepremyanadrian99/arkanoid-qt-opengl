@@ -22,7 +22,7 @@ class Helper {
 
 public:
     static bool contains(const MovableCircle &circle, const MovableRectangle &rect);
-    static void handleCollision(MovableCircle &circle, MovableRectangle &rect);
+    static bool handleCollision(MovableCircle &circle, MovableRectangle &rect);
     static void handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects);
     static void handleBallOutsideMap(MovableCircle &circle, int width, int height);
     static COLLISION_TYPE getCollisionType(const MovableCircle &circle, const MovableRectangle &rect);

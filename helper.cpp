@@ -3,7 +3,7 @@
 
 std::map<int, int> collapseMap;
 
-void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
+bool Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
     if(rect.getId() == 0) {
         auto idToRemove = collapseMap.find(circle.getId());
         if(idToRemove != collapseMap.end()) {
@@ -11,7 +11,7 @@ void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
                 collapseMap.erase(idToRemove);
             } else {
                 --idToRemove->second;
-                return;
+                return false;
             }
         }
     }
@@ -57,6 +57,8 @@ void Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
 
         circle.move();
     }
+
+    return collided;
 }
 
 void Helper::handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects) {
@@ -93,7 +95,7 @@ COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const Movab
            (cx - rx - rw) * (cx - rx - rw) + (cy - ry) * (cy - ry) <= cr * cr ||
            (cx - rx) * (cx - rx) + (cy - ry - rh) * (cy - ry - rh) <= cr * cr ||
            (cx - rx - rw) * (cx - rx - rw) + (cy - ry - rh) * (cy - ry - rh) <= cr * cr) {
-        std::cout << "corners" << std::endl;
+        std::cout << "corner" << std::endl;
         return COLLISION_TYPE::CORNER_COLLISION;
     }
     return COLLISION_TYPE::NONE;

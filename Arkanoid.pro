@@ -32,6 +32,7 @@ SOURCES += \
     ball.cpp \
     helper.cpp \
     board.cpp \
+    map.cpp \
     movablecircle.cpp \
     movableobject.cpp \
     movablerectangle.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     ball.h \
     helper.h \
     board.h \
+    map.h \
     movablecircle.h \
     movableobject.h \
     movablerectangle.h \

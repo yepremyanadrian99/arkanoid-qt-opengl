@@ -12,6 +12,8 @@ public:
 
     qreal getLife() const;
     void setLife(qreal life);
+    void hit();
+    bool isDestroyed() const;
 
 private:
     qreal life;
