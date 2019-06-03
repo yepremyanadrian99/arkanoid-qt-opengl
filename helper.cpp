@@ -1,7 +1,7 @@
 #include "helper.h"
 #include <iostream>
 
-std::map<int, int> collapseMap;
+std::map<int, int> Helper::collapseMap;
 
 bool Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
     if(rect.getId() == 0) {
@@ -86,16 +86,13 @@ COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const Movab
     qreal rh = rect.getHeight();
 
     if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps - 0.1|| abs(abs(cy - ry - rh) - cr) < eps - 0.1)) {
-        std::cout << "up/down" << std::endl;
         return COLLISION_TYPE::UP_DOWN_COLLISION;
     } else if(cy >= ry && cy <= ry + rh && (abs(abs(cx - rx) - cr) <= eps - 0.1 || abs(abs(cx - rx - rw) - cr) <= eps - 0.1)) {
-        std::cout << "left/right" << std::endl;
         return COLLISION_TYPE::LEFT_RIGHT_COLLISION;
     } else if((cx - rx) * (cx - rx) + (cy - ry) * (cy - ry) <= cr * cr ||
            (cx - rx - rw) * (cx - rx - rw) + (cy - ry) * (cy - ry) <= cr * cr ||
            (cx - rx) * (cx - rx) + (cy - ry - rh) * (cy - ry - rh) <= cr * cr ||
            (cx - rx - rw) * (cx - rx - rw) + (cy - ry - rh) * (cy - ry - rh) <= cr * cr) {
-        std::cout << "corner" << std::endl;
         return COLLISION_TYPE::CORNER_COLLISION;
     }
     return COLLISION_TYPE::NONE;

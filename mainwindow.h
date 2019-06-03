@@ -14,6 +14,8 @@ public:
     MainWindow();
     ~MainWindow() override;
 
+    void gameOver();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;

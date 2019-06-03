@@ -1,5 +1,4 @@
 #include "map.h"
-#include <QPalette>
 
 Map::Map(QGLWidget *parent)
     :QGLWidget(parent) {
@@ -35,12 +34,36 @@ Map::Map(QGLWidget *parent)
     balls[8]->setX(280);
     balls[9]->setX(310);
 
-    for(int i = 1; 50 + 75 * i < this->width(); ++i) {
-        bricks.push_back(new Brick(50 + 75 * i, 50, 50, 25));
-    }
+//    for(int i = 1; 50 + 75 * i < this->width(); ++i) {
+//        bricks.push_back(new Brick(50 + 75 * i, 50, 50, 25));
+//    }
 }
 
 Map::~Map() {
+}
+
+void Map::load(std::string file) {
+    std::fstream stream(file);
+    if(!stream) {
+        std::cout << "Cannot open file: " << file << std::endl;
+        return;
+    }
+    double x, y, w, h;
+    int r, g, b, a, life;
+    while(stream.peek() != std::ifstream::traits_type::eof()) {
+        stream >> x >> y >> w >> h >> r >> g >> b >> a >> life;
+        Brick *brick = new Brick(x, y, w, h, QColor(r, g, b, a), life);
+        bricks.push_back(brick);
+    }
+}
+
+int Map::gameOver() {
+    if(bricks.empty()) {
+        return 1;
+    } else if(balls.empty()) {
+        return -1;
+    }
+    return 0;
 }
 
 void Map::animate() {
@@ -48,6 +71,10 @@ void Map::animate() {
 }
 
 void Map::paint(QPainter *painter, QPaintEvent) {
+    if(gameOver() != 0) {
+        return;
+    }
+
     painter->setPen(Qt::black);
 
     checkCollisions();
@@ -68,7 +95,7 @@ void Map::paint(QPainter *painter, QPaintEvent) {
     painter->setBrush(dynamic_cast<ColorfulObject*>(board)->getColor());
     painter->drawRect(board->getRect());
 
-    showInfo(painter);
+//    showInfo(painter);
 }
 
 void Map::paintEvent(QPaintEvent *event) {

@@ -9,8 +9,6 @@
 #include "movablerectangle.h"
 #include "brick.h"
 
-extern std::map<int, int> collapseMap;
-
 enum COLLISION_TYPE {
     UP_DOWN_COLLISION,
     LEFT_RIGHT_COLLISION,
@@ -18,14 +16,14 @@ enum COLLISION_TYPE {
     NONE
 };
 
-class Helper {
+namespace Helper {
+    extern std::map<int, int> collapseMap;
 
-public:
-    static bool contains(const MovableCircle &circle, const MovableRectangle &rect);
-    static bool handleCollision(MovableCircle &circle, MovableRectangle &rect);
-    static void handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects);
-    static void handleBallOutsideMap(MovableCircle &circle, int width, int height);
-    static COLLISION_TYPE getCollisionType(const MovableCircle &circle, const MovableRectangle &rect);
-};
+    bool contains(const MovableCircle &circle, const MovableRectangle &rect);
+    bool handleCollision(MovableCircle &circle, MovableRectangle &rect);
+    void handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects);
+    void handleBallOutsideMap(MovableCircle &circle, int width, int height);
+    COLLISION_TYPE getCollisionType(const MovableCircle &circle, const MovableRectangle &rect);
+}
 
 #endif // HELPER_H

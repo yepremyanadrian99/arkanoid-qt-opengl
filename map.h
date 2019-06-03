@@ -1,15 +1,17 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <iostream>
+#include <fstream>
 #include <QGLWidget>
 #include <QTimer>
 #include <QPaintEvent>
+#include <QPalette>
+#include <QThread>
 #include "ball.h"
 #include "board.h"
 #include "helper.h"
 #include "brick.h"
-#include <QThread>
-#include <iostream>
 
 class Map : public QGLWidget {
 
@@ -21,6 +23,9 @@ public slots:
 public:
     Map(QGLWidget *parent = nullptr);
     virtual ~Map() override;
+
+    void load(std::string file);
+    int gameOver();
 
 public:
     void paintEvent(QPaintEvent *event) override;
