@@ -3,17 +3,7 @@
 Board::Board() {
 }
 
-Board::~Board() {
-    if(instance) {
-        delete instance;
-    }
-}
-
-Board* Board::instance = nullptr;
-
-Board* Board::getInstance() {
-    if(!instance) {
-        instance = new Board();
-    }
+Board& Board::getInstance() {
+    static Board instance;
     return instance;
 }

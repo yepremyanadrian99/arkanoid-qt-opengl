@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGridLayout>
+#include <QFile>
 #include <iostream>
 #include "map.h"
 

@@ -21,7 +21,6 @@ namespace Helper {
 
     bool contains(const MovableCircle &circle, const MovableRectangle &rect);
     bool handleCollision(MovableCircle &circle, MovableRectangle &rect);
-    void handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects);
     void handleBallOutsideMap(MovableCircle &circle, int width, int height);
     COLLISION_TYPE getCollisionType(const MovableCircle &circle, const MovableRectangle &rect);
 }

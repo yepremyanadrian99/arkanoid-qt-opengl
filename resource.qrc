@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/sounds/destroy.wav</file>
+        <file>resources/sounds/hit.wav</file>
+        <file>resources/sounds/lose.wav</file>
+        <file>resources/sounds/lose1.wav</file>
+        <file>resources/sounds/win.wav</file>
+        <file>resources/images/ball_blue.png</file>
+        <file>resources/images/ball_brown.png</file>
+        <file>resources/images/ball_green.png</file>
+        <file>resources/images/ball_red.png</file>
+        <file>resources/images/block_blue.png</file>
+        <file>resources/images/block_cyan.png</file>
+        <file>resources/images/block_green.png</file>
+        <file>resources/images/block_orange.png</file>
+        <file>resources/images/block_pink.png</file>
+        <file>resources/images/block_red.png</file>
+        <file>resources/images/block_violet.png</file>
+        <file>resources/images/block_yellow.png</file>
+        <file>resources/images/board_large.png</file>
+        <file>resources/images/board_medium.png</file>
+        <file>resources/images/board_small.png</file>
+        <file>resources/maps/map.txt</file>
+        <file>resources/maps/map1.txt</file>
+    </qresource>
+</RCC>

@@ -3,11 +3,19 @@
 MainWindow::MainWindow() {
     this->showFullScreen();
 
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, Qt::black);
+
     widget = new QGLWidget(this);
     widget->setGeometry(this->geometry());
+    widget->setPalette(pal);
+
+    this->setPalette(pal);
 
     map = new Map(widget);
-    map->load("map.txt");
+    if(!map->load("map1.txt")) {
+        return;
+    }
 
     layout = new QGridLayout;
     layout->addWidget(map);
@@ -16,7 +24,7 @@ MainWindow::MainWindow() {
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, map, &Map::animate);
     connect(timer, &QTimer::timeout, this, &MainWindow::gameOver);
-    timer->start(5);
+    timer->start(1);
 }
 
 MainWindow::~MainWindow() {
@@ -27,14 +35,9 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::gameOver() {
-    if(!map->gameOver()) {
-        return;
-    } else if(map->gameOver() > 0) {
-//        show win message
-    } else if(map->gameOver() < 0) {
-//        show lose message
+    if(map->gameOver()) {
+        timer->stop();
     }
-    timer->stop();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

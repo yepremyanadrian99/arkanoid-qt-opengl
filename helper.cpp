@@ -61,12 +61,6 @@ bool Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
     return collided;
 }
 
-void Helper::handleCollision(MovableCircle &circle, std::vector<MovableRectangle*> rects) {
-    for(size_t i = 0; i < rects.size(); ++i) {
-        handleCollision(circle, *rects[i]);
-    }
-}
-
 bool Helper::contains(const MovableCircle &circle, const MovableRectangle &rect) {
     qreal deltaX = circle.getPoint().x() - std::max(rect.getX(), std::min(circle.getPoint().x(), rect.getX() + rect.getWidth()));
     qreal deltaY = circle.getPoint().y() - std::max(rect.getY(), std::min(circle.getPoint().y(), rect.getY()+ rect.getHeight()));
@@ -85,7 +79,7 @@ COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const Movab
     qreal rw = rect.getWidth();
     qreal rh = rect.getHeight();
 
-    if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps - 0.1|| abs(abs(cy - ry - rh) - cr) < eps - 0.1)) {
+    if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps - 0.1 || abs(abs(cy - ry - rh) - cr) <= eps - 0.1)) {
         return COLLISION_TYPE::UP_DOWN_COLLISION;
     } else if(cy >= ry && cy <= ry + rh && (abs(abs(cx - rx) - cr) <= eps - 0.1 || abs(abs(cx - rx - rw) - cr) <= eps - 0.1)) {
         return COLLISION_TYPE::LEFT_RIGHT_COLLISION;

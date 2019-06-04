@@ -8,6 +8,8 @@
 #include <QPaintEvent>
 #include <QPalette>
 #include <QThread>
+#include <QCoreApplication>
+#include <QMediaPlayer>
 #include "ball.h"
 #include "board.h"
 #include "helper.h"
@@ -24,8 +26,11 @@ public:
     Map(QGLWidget *parent = nullptr);
     virtual ~Map() override;
 
-    void load(std::string file);
+    int load(std::string file);
+    void loadMedia();
     int gameOver();
+    void win();
+    void lose();
 
 public:
     void paintEvent(QPaintEvent *event) override;
@@ -42,10 +47,14 @@ private:
     void generateBall();
 
 private:
-    QTimer *timer;
-    Board* board;
     std::vector<Ball*> balls;
     std::vector<Brick*> bricks;
+    qreal cellWidth;
+    qreal cellHeight;
+    QMediaPlayer hitMedia;
+    QMediaPlayer destroyMedia;
+    QMediaPlayer winMedia;
+    QMediaPlayer loseMedia;
 };
 
 #endif // MAP_H

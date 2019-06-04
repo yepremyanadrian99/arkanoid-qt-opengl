@@ -9,12 +9,11 @@ class Board : public MovableRectangle, public ColorfulObject {
 private:
     Board();
 
-private:
-    static Board *instance;
-
 public:
-    ~Board();
-    static Board* getInstance();
+     Board(const Board&) = delete;
+     Board& operator=(const Board&) = delete;
+
+    static Board& getInstance();
 };
 
 #endif // BLOCK_H
