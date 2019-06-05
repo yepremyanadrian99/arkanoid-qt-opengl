@@ -13,7 +13,7 @@ MainWindow::MainWindow() {
     this->setPalette(pal);
 
     map = new Map(widget);
-    if(!map->load("map1.txt")) {
+    if(!map->loadMap("map1.txt")) {
         return;
     }
 

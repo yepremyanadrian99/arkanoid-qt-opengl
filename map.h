@@ -2,7 +2,7 @@
 #define MAP_H
 
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <QGLWidget>
 #include <QTimer>
 #include <QPaintEvent>
@@ -26,7 +26,7 @@ public:
     Map(QGLWidget *parent = nullptr);
     virtual ~Map() override;
 
-    int load(std::string file);
+    int loadMap(std::string filename);
     void loadMedia();
     int gameOver();
     void win();
