@@ -91,18 +91,3 @@ COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const Movab
     }
     return COLLISION_TYPE::NONE;
 }
-
-void Helper::handleBallOutsideMap(MovableCircle &circle, int width, int height) {
-    if(circle.getX() + circle.getRadius() / 2 > width) {
-        circle.setX(width - circle.getRadius() / 2);
-    }
-    if(circle.getX() - circle.getRadius() / 2 < 0) {
-        circle.setX(circle.getRadius() / 2);
-    }
-    if(circle.getY() + circle.getRadius() / 2 > height) {
-        circle.setY(height - circle.getRadius() / 2);
-    }
-    if(circle.getY() - circle.getRadius() / 2 < 0) {
-        circle.setY(circle.getRadius() / 2);
-    }
-}
