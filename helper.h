@@ -8,6 +8,9 @@
 #include "movablecircle.h"
 #include "movablerectangle.h"
 #include "brick.h"
+#include "constants.h"
+
+using namespace Constants;
 
 enum COLLISION_TYPE {
     UP_DOWN_COLLISION,

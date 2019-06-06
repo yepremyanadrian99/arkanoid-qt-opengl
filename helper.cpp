@@ -28,31 +28,31 @@ bool Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
 //        always move the ball up when hit by sides to not lose
         circle.setVy(-abs(circle.getVy()));
         if(rect.getId() == 0) {
-            collapseMap[circle.getId()] = 100;
+            collapseMap[circle.getId()] = IGNORE_BOARD_COUNT;
         }
     } else if(collType == COLLISION_TYPE::CORNER_COLLISION) {
         collided = true;
         circle.getVelocity().reverseX();
         circle.getVelocity().reverseY();
         circle.setX(circle.getX() + rect.getVx());
-        if(rect.getId() == 0) {
-            collapseMap[circle.getId()] = 100;
+        if(rect.getId() == BOARD_ID) {
+            collapseMap[circle.getId()] = IGNORE_BOARD_COUNT;
         }
     }
 
-    if(collided && (abs(rect.getVx()) >= 0.1 || abs(rect.getVy()) >= 0.1)) {
+    if(collided && (abs(rect.getVx()) > 0 || abs(rect.getVy()) > 0)) {
         qreal vLen = circle.getVelocity().length();
         qreal alpha = std::atan2((circle.getVy() + rect.getVy()), (circle.getVx() + rect.getVx()));
 
         circle.setVx(vLen * cos(alpha));
         circle.setVy(vLen * sin(alpha));
 
-        if(abs(circle.getVx()) < 0.5) {
-            circle.setVx((circle.getVx() < 0 ? -0.5 : 0.5));
-            circle.setVy(std::sqrt(4 - circle.getVx() * circle.getVx()) * (circle.getVy() < 0 ? -1 : 1));
-        } else if(abs(circle.getVy()) < 0.5) {
-            circle.setVy((circle.getVy() < 0 ? -0.5 : 0.5));
-            circle.setVx(std::sqrt(4 - circle.getVy() * circle.getVy()) * (circle.getVx() < 0 ? -1 : 1));
+        if(abs(circle.getVx()) < BALL_VELOCITY_X_Y_MIN) {
+            circle.setVx((circle.getVx() < 0 ? -BALL_VELOCITY_X_Y_MIN : BALL_VELOCITY_X_Y_MIN));
+            circle.setVy(std::sqrt(int(BALL_VELOCITY) - circle.getVx() * circle.getVx()) * (circle.getVy() < 0 ? -1 : 1));
+        } else if(abs(circle.getVy()) < BALL_VELOCITY_X_Y_MIN) {
+            circle.setVy((circle.getVy() < 0 ? -BALL_VELOCITY_X_Y_MIN : BALL_VELOCITY_X_Y_MIN));
+            circle.setVx(std::sqrt(int(BALL_VELOCITY) - circle.getVy() * circle.getVy()) * (circle.getVx() < 0 ? -1 : 1));
         }
 
         circle.move();
@@ -79,9 +79,9 @@ COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const Movab
     qreal rw = rect.getWidth();
     qreal rh = rect.getHeight();
 
-    if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps - 0.1 || abs(abs(cy - ry - rh) - cr) <= eps - 0.1)) {
+    if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps - COLLISION_DEVIATION || abs(abs(cy - ry - rh) - cr) <= eps - COLLISION_DEVIATION)) {
         return COLLISION_TYPE::UP_DOWN_COLLISION;
-    } else if(cy >= ry && cy <= ry + rh && (abs(abs(cx - rx) - cr) <= eps - 0.1 || abs(abs(cx - rx - rw) - cr) <= eps - 0.1)) {
+    } else if(cy >= ry && cy <= ry + rh && (abs(abs(cx - rx) - cr) <= eps - COLLISION_DEVIATION || abs(abs(cx - rx - rw) - cr) <= eps - COLLISION_DEVIATION)) {
         return COLLISION_TYPE::LEFT_RIGHT_COLLISION;
     } else if((cx - rx) * (cx - rx) + (cy - ry) * (cy - ry) <= cr * cr ||
            (cx - rx - rw) * (cx - rx - rw) + (cy - ry) * (cy - ry) <= cr * cr ||

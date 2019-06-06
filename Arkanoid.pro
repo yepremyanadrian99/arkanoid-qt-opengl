@@ -42,6 +42,7 @@ SOURCES += \
 
 HEADERS += \
     brick.h \
+    constants.h \
     gameobject.h \
     mainwindow.h \
     ball.h \

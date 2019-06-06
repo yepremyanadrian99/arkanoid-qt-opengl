@@ -6,6 +6,9 @@
 #include <QFile>
 #include <iostream>
 #include "map.h"
+#include "constants.h"
+
+using namespace Constants;
 
 class MainWindow : public QWidget {
 

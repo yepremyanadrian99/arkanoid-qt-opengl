@@ -4,22 +4,8 @@ Map::Map(QGLWidget *parent)
     :QGLWidget(parent) {
 
     this->setGeometry(parent->geometry());
-
-    cellWidth = this->width() / 25;
-    cellHeight = this->height() / 30;
-
-    QPalette pal = palette();
-    pal.setColor(QPalette::Background, QColor(51, 0, 102, 255));
-    this->setAutoFillBackground(true);
-    this->setPalette(pal);
-
-    Board::getInstance().setRect(QRectF(this->width() / 2 - cellWidth*3/4, this->height() - cellHeight*3/2, cellWidth*3/2, cellHeight));
-    Board::getInstance().setColor(Qt::GlobalColor::white);
-
-    balls = std::vector<Ball*>();
-
+    Board::getInstance().setRect(QRectF(BOARD_STARTING_X, BOARD_STARTING_Y, BOARD_WIDTH, BOARD_HEIGHT));
     generateBall();
-
     loadMedia();
 }
 
@@ -32,19 +18,25 @@ Map::~Map() {
     }
 }
 
-void Map::loadMedia() {
-    hitMedia.setMedia(QMediaContent(QUrl("qrc:/resources/sounds/hit.wav")));
-    destroyMedia.setMedia(QMediaContent(QUrl("qrc:/resources/sounds/destroy.wav")));
-    winMedia.setMedia(QMediaContent(QUrl("qrc:/resources/sounds/win.wav")));
-    loseMedia.setMedia(QMediaContent(QUrl("qrc:/resources/sounds/lose.wav")));
+void Map::setBackground(QColor color) {
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, color);
+    this->setAutoFillBackground(true);
+    this->setPalette(pal);
 }
 
-int Map::loadMap(std::string filename) {
+void Map::loadMedia() {
+    hitMedia.setMedia(QMediaContent(HIT_SOUND_RESOURCE_URL));
+    winMedia.setMedia(QMediaContent(WIN_SOUND_RESOURCE_URL));
+    loseMedia.setMedia(QMediaContent(LOSE_SOUND_RESOURCE_URL));
+}
+
+int Map::loadMap(QString filename) {
     std::stringstream stream;
 
-    QFile file(QString(":/resources/maps/") + QString::fromStdString(filename));
+    QFile file(QString(MAPS_RESOURCE_PATH + filename));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        std::cout << "Cannot open file: " << filename << std::endl;
+        std::cout << CANNOT_OPEN_FILE_MSG << filename.toStdString() << std::endl;
         return 0;
     }
 
@@ -52,9 +44,13 @@ int Map::loadMap(std::string filename) {
     file.close();
 
     int i, j, r, g, b, a, life;
+    bool isMovable;
     while(stream.peek() != std::stringstream::traits_type::eof()) {
-        stream >> i >> j >> r >> g >> b >> a >> life;
-        Brick *brick = new Brick(i * cellWidth, j * cellHeight, cellWidth, cellHeight, QColor(r, g, b, a), life);
+        stream >> i >> j >> r >> g >> b >> a >> life >> isMovable;
+        Brick *brick = new Brick(i * CELL_WIDTH, j * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, QColor(r, g, b, a), life);
+        if(isMovable) {
+            brick->setVx(BRICK_SPEED);
+        }
         bricks.push_back(brick);
     }
     return 1;
@@ -76,53 +72,44 @@ void Map::animate() {
 }
 
 void Map::paint(QPainter *painter, QPaintEvent) {
-    painter->setPen(Qt::white);
-
     if(gameOver() != 0) {
+        painter->setPen(GAME_OVER_MSG_COLOR);
+
         QFont font = painter->font();
-        font.setPointSize(100);
+        font.setPointSize(GAME_OVER_MSG_FONT_POINT_SIZE);
         painter->setFont(font);
 
-        QRect center(0, 0, this->width(), this->height());
-        QRect bottom(0, 100, this->width(), this->height());
-
-        QString winText("YOU WON");
-        QString loseText("YOU LOSE");
-
         if(gameOver() > 0) {
-            painter->drawText(center, winText, QTextOption(Qt::Alignment(Qt::AlignmentFlag::AlignCenter)));
+            painter->drawText(GAME_OVER_MSG_RECT, WIN_MSG, QTextOption(Qt::Alignment(Qt::AlignmentFlag::AlignCenter)));
             return;
         } else if(gameOver() < 0) {
-            painter->drawText(center, loseText, QTextOption(Qt::Alignment(Qt::AlignmentFlag::AlignCenter)));
+            painter->drawText(GAME_OVER_MSG_RECT, LOSE_MSG, QTextOption(Qt::Alignment(Qt::AlignmentFlag::AlignCenter)));
             return;
         }
     }
 
-    painter->setPen(Qt::black);
+    painter->setPen(NORMAL_PEN_COLOR);
 
     checkCollisions();
 
     for(MovableCircle *b : balls) {
         painter->setBrush(dynamic_cast<ColorfulObject*>(b)->getColor());
         painter->drawEllipse(b->getPoint(), b->getRadius(), b->getRadius());
-//        painter->drawImage(QRectF(b->getX(), b->getY(), b->getRadius(), b->getRadius()),
-//                           QImage(":/resources/images/ball_red.png"));
     }
 
     for(MovableRectangle *b : bricks) {
         painter->setBrush(dynamic_cast<ColorfulObject*>(b)->getColor());
         painter->drawRect(b->getRect());
-//        painter->drawImage(b->getRect(), QImage(QString("%1/board_medium.png").arg(QCoreApplication::applicationDirPath())));
     }
 
-    painter->drawImage(Board::getInstance().getRect(), QImage(":/resources/images/board_large.png"));
-//    showInfo(painter);
+    painter->drawImage(Board::getInstance().getRect(), BOARD_MEDIUM_IMAGE);
 }
 
 void Map::paintEvent(QPaintEvent *event) {
     QPainter painter;
     painter.begin(this);
     painter.setRenderHint(QPainter::RenderHint::Antialiasing);
+    painter.setRenderHint(QPainter::RenderHint::HighQualityAntialiasing);
     paint(&painter, *event);
     painter.end();
 }
@@ -130,10 +117,10 @@ void Map::paintEvent(QPaintEvent *event) {
 void Map::keyPressEvent(QKeyEvent *event) {
     if(event->key() == Qt::Key_A &&
             Board::getInstance().getX() > 1) {
-        Board::getInstance().setVx(-2);
+        Board::getInstance().setVx(-BOARD_VELOCITY_X);
     } else if(event->key() == Qt::Key_D &&
               Board::getInstance().getX() < this->width() - Board::getInstance().getWidth() - 1) {
-        Board::getInstance().setVx(2);
+        Board::getInstance().setVx(BOARD_VELOCITY_X);
     }
 }
 
@@ -144,25 +131,10 @@ void Map::keyReleaseEvent(QKeyEvent *event)  {
     }
 }
 
-void Map::showInfo(QPainter* painter) {
-    painter->drawText(QPointF(0, 10), "Board vx: " + QString::number(Board::getInstance().getVx()));
-    painter->drawText(QPointF(0, 20), "Board vy: " + QString::number(Board::getInstance().getVy()));
-    painter->drawText(QPointF(0, 30), "Board x: " + QString::number(Board::getInstance().getX()));
-    painter->drawText(QPointF(0, 40), "Board y: " + QString::number(Board::getInstance().getY()));
-    painter->drawText(QPointF(0, 50), "Board width: " + QString::number(Board::getInstance().getWidth()));
-    painter->drawText(QPointF(0, 60), "Board height: " + QString::number(Board::getInstance().getHeight()));
-
-    painter->setPen(Qt::black);
-    for(size_t i = 0; i < balls.size(); ++i) {
-        painter->drawText(QPointF(0, 80+10*i*3), "Ball#" + QString::number(i) + " vx: " + QString::number(balls[i]->getVx()));
-        painter->drawText(QPointF(0, 90+10*i*3), "Ball#" + QString::number(i) + " vy: " + QString::number(balls[i]->getVy()));
-        painter->drawText(QPointF(0, 100+10*i*3), "Ball#" + QString::number(i) + " vx2 + vy2: " + QString::number(balls[i]->getVx()*balls[i]->getVx()+balls[i]->getVy()*balls[i]->getVy()));
-    }
-}
-
 void Map::checkCollisions() {
     checkBoardCollisionsAndMove();
     checkBallCollisionsAndMove();
+    checkRectCollisionsAndMove();
 }
 
 void Map::checkBoardCollisionsAndMove() {
@@ -181,6 +153,7 @@ void Map::checkBallCollisionsAndMove() {
         }
 
         for(auto it = bricks.begin(); it != bricks.end(); ) {
+            (*it)->move();
             if(Helper::handleCollision(*b, **it)) {
                 hitMedia.play();
                 (*it)->hit();
@@ -213,15 +186,25 @@ void Map::checkBallCollisionsAndMove() {
     }
 }
 
+void Map::checkRectCollisionsAndMove() {
+    for(Brick *b : bricks) {
+        if(b->getX() <= BRICK_LEFT_SCREEN_BORDER) {
+            b->setVx(BRICK_SPEED);
+        } else if(b->getX() + b->getWidth() >= BRICK_RIGHT_SCREEN_BORDER) {
+            b->setVx(-BRICK_SPEED);
+        }
+    }
+}
+
 void Map::generateBall() {
     std::srand(std::time(NULL));
-    qreal vx = (5 + std::rand() % 11) / 10.0;
-    qreal vy = std::sqrt(4 - vx * vx);
+    qreal vx = (BALL_VELOCITY_X_Y_MIN*10 + std::rand() % int(BALL_VELOCITY*BALL_VELOCITY) - BALL_VELOCITY_X_Y_MIN*10) / 10.0;
+    qreal vy = std::sqrt(BALL_VELOCITY - vx * vx);
 
-    Ball *b = new Ball(Board::getInstance().getX() + Board::getInstance().getWidth() / 2, Board::getInstance().getY() - 50, 15);
+    Ball *b = new Ball(BALL_STARTING_X, BALL_STARTING_Y, BALL_RADIUS);
     b->setVx(vx);
     b->setVy(-abs(vy));
-    b->setColor(Qt::red);
+    b->setColor(BALL_COLOR);
 
     balls.push_back(b);
 }

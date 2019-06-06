@@ -4,7 +4,7 @@ MainWindow::MainWindow() {
     this->showFullScreen();
 
     QPalette pal = palette();
-    pal.setColor(QPalette::Background, Qt::black);
+    pal.setColor(QPalette::Background, BORDER_RGB);
 
     widget = new QGLWidget(this);
     widget->setGeometry(this->geometry());
@@ -13,9 +13,10 @@ MainWindow::MainWindow() {
     this->setPalette(pal);
 
     map = new Map(widget);
-    if(!map->loadMap("map1.txt")) {
+    if(!map->loadMap(LOAD_MAP)) {
         return;
     }
+    map->setBackground(BACKGROUND_RGB);
 
     layout = new QGridLayout;
     layout->addWidget(map);
@@ -24,7 +25,7 @@ MainWindow::MainWindow() {
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, map, &Map::animate);
     connect(timer, &QTimer::timeout, this, &MainWindow::gameOver);
-    timer->start(1);
+    timer->start(TIMER_SPEED);
 }
 
 MainWindow::~MainWindow() {
