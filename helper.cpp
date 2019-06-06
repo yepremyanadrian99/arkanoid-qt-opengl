@@ -25,9 +25,9 @@ bool Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
     } else if(collType == COLLISION_TYPE::LEFT_RIGHT_COLLISION) {
         collided = true;
         circle.getVelocity().reverseX();
-//        always move the ball up when hit by sides to not lose
-        circle.setVy(-abs(circle.getVy()));
         if(rect.getId() == 0) {
+//            always move the ball up when hit by sides to not lose
+            circle.setVy(-abs(circle.getVy()));
             collapseMap[circle.getId()] = IGNORE_BOARD_COUNT;
         }
     } else if(collType == COLLISION_TYPE::CORNER_COLLISION) {
