@@ -8,7 +8,7 @@ class ColorfulObject {
 public:
     ColorfulObject();
     ColorfulObject(QColor color);
-    ~ColorfulObject();
+    virtual ~ColorfulObject() = 0;
 
     const QColor getColor() const;
     void setColor(QColor color);

@@ -8,7 +8,7 @@ class DestroyableObject {
 public:
     DestroyableObject();
     DestroyableObject(qreal life);
-    ~DestroyableObject();
+    virtual ~DestroyableObject() = 0;
 
     qreal getLife() const;
     void setLife(qreal life);
