@@ -79,9 +79,9 @@ COLLISION_TYPE Helper::getCollisionType(const MovableCircle &circle, const Movab
     qreal rw = rect.getWidth();
     qreal rh = rect.getHeight();
 
-    if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps - COLLISION_DEVIATION || abs(abs(cy - ry - rh) - cr) <= eps - COLLISION_DEVIATION)) {
+    if(cx >= rx && cx <= (rx + rw) && (abs(abs(cy - ry) - cr) <= eps || abs(abs(cy - ry - rh) - cr) <= eps)) {
         return COLLISION_TYPE::UP_DOWN_COLLISION;
-    } else if(cy >= ry && cy <= ry + rh && (abs(abs(cx - rx) - cr) <= eps - COLLISION_DEVIATION || abs(abs(cx - rx - rw) - cr) <= eps - COLLISION_DEVIATION)) {
+    } else if(cy >= ry && cy <= ry + rh && (abs(abs(cx - rx) - cr) <= eps || abs(abs(cx - rx - rw) - cr) <= eps)) {
         return COLLISION_TYPE::LEFT_RIGHT_COLLISION;
     } else if((cx - rx) * (cx - rx) + (cy - ry) * (cy - ry) <= cr * cr ||
            (cx - rx - rw) * (cx - rx - rw) + (cy - ry) * (cy - ry) <= cr * cr ||

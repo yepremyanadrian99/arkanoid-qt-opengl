@@ -35,7 +35,7 @@ namespace Constants {
     static const qreal BALL_VELOCITY_X_Y_MIN = 0.5;
     static const QColor BALL_COLOR = Qt::red;
     static const qreal BRICK_SPEED = 0.5;
-    static const qreal BRICK_LEFT_SCREEN_BORDER = SCREEN_WIDTH / 8;
+    static const qreal BRICK_LEFT_SCREEN_BORDER = SCREEN_WIDTH / 4;
     static const qreal BRICK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - SCREEN_WIDTH / 8;
     static const QUrl HIT_SOUND_RESOURCE_URL = QUrl("qrc:/resources/sounds/hit.wav");
     static const QUrl DESTROY_SOUND_RESOURCE_URL = QUrl("qrc:/resources/sounds/destroy.wav");
@@ -51,7 +51,6 @@ namespace Constants {
     static const QColor NORMAL_PEN_COLOR = Qt::black;
 
     static const int IGNORE_BOARD_COUNT = 100;
-    static const qreal COLLISION_DEVIATION = 0.1;
 }
 
 #endif // CONSTANTS_H
