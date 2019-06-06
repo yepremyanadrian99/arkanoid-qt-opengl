@@ -188,10 +188,12 @@ void Map::checkBallCollisionsAndMove() {
 
 void Map::checkRectCollisionsAndMove() {
     for(Brick *b : bricks) {
-        if(b->getX() <= BRICK_LEFT_SCREEN_BORDER) {
-            b->setVx(BRICK_SPEED);
-        } else if(b->getX() + b->getWidth() >= BRICK_RIGHT_SCREEN_BORDER) {
-            b->setVx(-BRICK_SPEED);
+        if(abs(b->getVx()) > 0.0 || abs(b->getVy()) > 0.0) {
+            if(b->getX() <= BRICK_LEFT_SCREEN_BORDER) {
+                b->setVx(BRICK_SPEED);
+            } else if(b->getX() + b->getWidth() >= BRICK_RIGHT_SCREEN_BORDER) {
+                b->setVx(-BRICK_SPEED);
+            }
         }
     }
 }

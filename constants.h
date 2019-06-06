@@ -11,7 +11,7 @@ using std::string;
 namespace Constants {
     static const QColor BACKGROUND_RGB = QColor(51, 0, 102, 255);
     static const QColor BORDER_RGB = Qt::black;
-    static const QString LOAD_MAP = "map.txt";
+    static const QString LOAD_MAP = "map1.txt";
     static const int TIMER_SPEED = 1;
     static const qreal SCREEN_WIDTH = 1920;
     static const qreal SCREEN_HEIGHT = 1080;
@@ -31,9 +31,9 @@ namespace Constants {
     static const qreal BALL_RADIUS = 15;
     static const qreal BALL_STARTING_X = BOARD_STARTING_X + BOARD_WIDTH / 2;
     static const qreal BALL_STARTING_Y = BOARD_STARTING_Y - BALL_RADIUS * 2;
-    static const qreal BALL_VELOCITY = 2;
+    static const qreal BALL_VELOCITY = 4;
+    static const qreal BALL_VELOCITY_X_Y_MIN = 0.5;
     static const QColor BALL_COLOR = Qt::red;
-    static const qreal BALL_VELOCITY_X_Y_MIN = 0.1;
     static const qreal BRICK_SPEED = 0.5;
     static const qreal BRICK_LEFT_SCREEN_BORDER = SCREEN_WIDTH / 8;
     static const qreal BRICK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - SCREEN_WIDTH / 8;
