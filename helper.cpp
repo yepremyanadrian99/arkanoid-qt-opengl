@@ -34,7 +34,6 @@ bool Helper::handleCollision(MovableCircle &circle, MovableRectangle &rect) {
         collided = true;
         circle.getVelocity().reverseX();
         circle.getVelocity().reverseY();
-        circle.setX(circle.getX() + rect.getVx());
         if(rect.getId() == BOARD_ID) {
             collapseMap[circle.getId()] = IGNORE_BOARD_COUNT;
         }
