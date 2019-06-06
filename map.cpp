@@ -10,12 +10,6 @@ Map::Map(QGLWidget *parent)
 }
 
 Map::~Map() {
-    for(size_t i = 0; i < bricks.size(); ++i) {
-        delete bricks[i];
-    }
-    for(size_t i = 0; i < balls.size(); ++i) {
-        delete balls[i];
-    }
 }
 
 void Map::setBackground(QColor color) {
@@ -47,9 +41,9 @@ int Map::loadMap(QString filename) {
     bool isMovable;
     while(stream.peek() != std::stringstream::traits_type::eof()) {
         stream >> i >> j >> r >> g >> b >> a >> life >> isMovable;
-        Brick *brick = new Brick(i * CELL_WIDTH, j * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, QColor(r, g, b, a), life);
+        Brick brick(i * CELL_WIDTH, j * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, QColor(r, g, b, a), life);
         if(isMovable) {
-            brick->setVx(BRICK_SPEED);
+            brick.setVx(BRICK_SPEED);
         }
         bricks.push_back(brick);
     }
@@ -92,14 +86,14 @@ void Map::paint(QPainter *painter, QPaintEvent) {
 
     checkCollisions();
 
-    for(MovableCircle *b : balls) {
-        painter->setBrush(dynamic_cast<ColorfulObject*>(b)->getColor());
-        painter->drawEllipse(b->getPoint(), b->getRadius(), b->getRadius());
+    for(Ball &b : balls) {
+        painter->setBrush(b.getColor());
+        painter->drawEllipse(b.getPoint(), b.getRadius(), b.getRadius());
     }
 
-    for(MovableRectangle *b : bricks) {
-        painter->setBrush(dynamic_cast<ColorfulObject*>(b)->getColor());
-        painter->drawRect(b->getRect());
+    for(Brick &b : bricks) {
+        painter->setBrush(b.getColor());
+        painter->drawRect(b.getRect());
     }
 
     painter->drawImage(Board::getInstance().getRect(), BOARD_MEDIUM_IMAGE);
@@ -147,18 +141,17 @@ void Map::checkBoardCollisionsAndMove() {
 }
 
 void Map::checkBallCollisionsAndMove() {
-    for(MovableCircle* b : balls) {
-        if(Helper::handleCollision(*b, Board::getInstance())) {
+    for(Ball &b : balls) {
+        if(Helper::handleCollision(b, Board::getInstance())) {
             hitMedia.play();
         }
 
         for(auto it = bricks.begin(); it != bricks.end(); ) {
-            (*it)->move();
-            if(Helper::handleCollision(*b, **it)) {
+            it->move();
+            if(Helper::handleCollision(b, *it)) {
                 hitMedia.play();
-                (*it)->hit();
-                if((*it)->isDestroyed()) {
-                    delete *it;
+                it->hit();
+                if(it->isDestroyed()) {
                     it = bricks.erase(it);
                     continue;
                 }
@@ -166,33 +159,31 @@ void Map::checkBallCollisionsAndMove() {
             ++it;
         }
 
-        if(b->getPoint().x() + b->getRadius() >= this->width() ||
-                b->getPoint().x() - b->getRadius() <= 0) {
+        if(b.getPoint().x() + b.getRadius() >= this->width() ||
+                b.getPoint().x() - b.getRadius() <= 0) {
             hitMedia.play();
-            b->setVx(-b->getVx());
+            b.getVelocity().reverseX();
         }
-        if(b->getPoint().y() - b->getRadius() <= 0) {
+        if(b.getPoint().y() - b.getRadius() <= 0) {
             hitMedia.play();
-            b->setVy(-b->getVy());
+            b.getVelocity().reverseY();
         }
-        if(b->getPoint().y() + b->getRadius() >= this->height()) {
-            auto it = std::find_if(balls.begin(), balls.end(), [b](Ball *ball) { return ball->getId() == b->getId(); });
-            delete *it;
+        if(b.getPoint().y() + b.getRadius() >= this->height()) {
+            auto it = std::find_if(balls.begin(), balls.end(), [b](Ball &ball) { return ball.getId() == b.getId(); });
             balls.erase(it);
             return;
         }
 
-        b->move();
+        b.move();
     }
 }
 
 void Map::checkRectCollisionsAndMove() {
-    for(Brick *b : bricks) {
-        if(abs(b->getVx()) > 0.0 || abs(b->getVy()) > 0.0) {
-            if(b->getX() <= BRICK_LEFT_SCREEN_BORDER) {
-                b->setVx(BRICK_SPEED);
-            } else if(b->getX() + b->getWidth() >= BRICK_RIGHT_SCREEN_BORDER) {
-                b->setVx(-BRICK_SPEED);
+    for(Brick &b : bricks) {
+        if(abs(b.getVx()) > 0.0 || abs(b.getVy()) > 0.0) {
+            if(b.getX() <= BRICK_LEFT_SCREEN_BORDER ||
+                    b.getX() + b.getWidth() >= BRICK_RIGHT_SCREEN_BORDER) {
+                b.getVelocity().reverseX();
             }
         }
     }
@@ -203,10 +194,10 @@ void Map::generateBall() {
     qreal vx = (BALL_VELOCITY_X_Y_MIN*10 + std::rand() % int(BALL_VELOCITY*BALL_VELOCITY) - BALL_VELOCITY_X_Y_MIN*10) / 10.0;
     qreal vy = std::sqrt(BALL_VELOCITY - vx * vx);
 
-    Ball *b = new Ball(BALL_STARTING_X, BALL_STARTING_Y, BALL_RADIUS);
-    b->setVx(vx);
-    b->setVy(-abs(vy));
-    b->setColor(BALL_COLOR);
+    Ball b(BALL_STARTING_X, BALL_STARTING_Y, BALL_RADIUS);
+    b.setVx(vx);
+    b.setVy(-abs(vy));
+    b.setColor(BALL_COLOR);
 
     balls.push_back(b);
 }

@@ -53,8 +53,8 @@ private:
     void generateBall();
 
 private:
-    std::vector<Ball*> balls;
-    std::vector<Brick*> bricks;
+    std::vector<Ball> balls;
+    std::vector<Brick> bricks;
     QMediaPlayer hitMedia;
     QMediaPlayer winMedia;
     QMediaPlayer loseMedia;
