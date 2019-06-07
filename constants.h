@@ -9,7 +9,7 @@
 using std::string;
 
 namespace Constants {
-    static const QColor BACKGROUND_RGB = QColor(51, 0, 102, 255);
+    static const QColor BACKGROUND_RGB = QColor(45, 45, 45, 255);
     static const QColor BORDER_RGB = Qt::black;
     static const QString LOAD_MAP = "map1.txt";
     static const int TIMER_SPEED = 1;
@@ -33,7 +33,7 @@ namespace Constants {
     static const qreal BALL_STARTING_Y = BOARD_STARTING_Y - BALL_RADIUS * 2;
     static const qreal BALL_VELOCITY = 4;
     static const qreal BALL_VELOCITY_X_Y_MIN = 0.5;
-    static const QColor BALL_COLOR = Qt::red;
+    static const QColor BALL_COLOR = Qt::white;
     static const qreal BRICK_SPEED = 0.5;
     static const qreal BRICK_LEFT_SCREEN_BORDER = SCREEN_WIDTH / 4;
     static const qreal BRICK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - SCREEN_WIDTH / 8;
@@ -49,7 +49,10 @@ namespace Constants {
     static const QString WIN_MSG = "YOU WON";
     static const QString LOSE_MSG = "YOU LOSE";
     static const QColor NORMAL_PEN_COLOR = Qt::black;
-
+    static const Qt::Key MOVE_LEFT_KEY1 = Qt::Key_A;
+    static const Qt::Key MOVE_LEFT_KEY2 = Qt::Key_Left;
+    static const Qt::Key MOVE_RIGHT_KEY1 = Qt::Key_D;
+    static const Qt::Key MOVE_RIGHT_KEY2 = Qt::Key_Right;
     static const int IGNORE_BOARD_COUNT = 100;
 }
 

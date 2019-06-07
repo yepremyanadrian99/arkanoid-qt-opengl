@@ -109,18 +109,18 @@ void Map::paintEvent(QPaintEvent *event) {
 }
 
 void Map::keyPressEvent(QKeyEvent *event) {
-    if(event->key() == Qt::Key_A &&
+    if((event->key() == MOVE_LEFT_KEY1 || event->key() == MOVE_LEFT_KEY2) &&
             Board::getInstance().getX() > 1) {
         Board::getInstance().setVx(-BOARD_VELOCITY_X);
-    } else if(event->key() == Qt::Key_D &&
+    } else if((event->key() == MOVE_RIGHT_KEY1 || event->key() == MOVE_RIGHT_KEY2) &&
               Board::getInstance().getX() < this->width() - Board::getInstance().getWidth() - 1) {
         Board::getInstance().setVx(BOARD_VELOCITY_X);
     }
 }
 
 void Map::keyReleaseEvent(QKeyEvent *event)  {
-    if((event->key() == Qt::Key_A && Board::getInstance().getVx() < 0) ||
-            (event->key() == Qt::Key_D && Board::getInstance().getVx() > 0)) {
+    if(((event->key() == MOVE_LEFT_KEY1 || event->key() == MOVE_LEFT_KEY2) && Board::getInstance().getVx() < 0) ||
+            ((event->key() == MOVE_RIGHT_KEY1 || event->key() == MOVE_RIGHT_KEY2) && Board::getInstance().getVx() > 0)) {
         Board::getInstance().setVx(0);
     }
 }
